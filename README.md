@@ -8,14 +8,15 @@
 # install dependencies
 npm install
 
-# serve with hot reload at localhost:8080
-npm run dev
 
 # build for production with minification
 npm run build
 
 # build for production and view the bundle analyzer report
 npm run build --report
+
+# run the server on localhost:8081
+node server.js
 
 # run unit tests
 npm run unit
