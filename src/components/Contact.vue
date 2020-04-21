@@ -1,5 +1,5 @@
 <template>
   <v-layout>
-    this is contact
+    this is my contact
   </v-layout>
 </template>

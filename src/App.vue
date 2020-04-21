@@ -43,7 +43,7 @@
           Add Movie
         </v-btn>
         <v-btn id="user_email" v-if="current_user">
-          {{ current_user.mail }}
+          {{ current_user.email }}
         </v-btn>
         <v-btn id="register_btn" v-bind:to="{ name: 'Register' }" v-if="!current_user">
           Register
@@ -100,7 +100,7 @@ export default {
     async fetchUser() {
       return axios({
         method: 'get',
-        url: '/api/current_user',
+        url: '/current_user',
       })
         .then((response) => {
           this.current_user = response.data.current_user;
@@ -111,13 +111,15 @@ export default {
     logout() {
       return axios({
         method: 'get',
-        url: '/api/logout',
+        url: '/logout',
       })
         .then(() => {
           bus.$emit('refreshUser');
           this.$router.push({ name: 'Home' });
         })
-        .catch(() => {
+        .catch((error) => {
+          // eslint-disable-next-line no-console
+          console.error(error);
         });
     },
   },

@@ -48,7 +48,7 @@ app.use(history());
 app.use(serveStatic(__dirname + "/dist"));
 
 // Add a GET route to fetch current logged in user
-router.get('/api/current_user', isLoggedIn, (req,res) => {
+router.get('/current_user', isLoggedIn, (req,res) => {
   console.log('accès ici');
   if (req.user) {
     res.send({ current_user: req.user })
@@ -65,7 +65,7 @@ function isLoggedIn(req, res, next) {
   console.log('error! auth failed');
 }
 // Logs out and destroy the session
-router.get('/api/logout', (req, res) => {
+router.get('/logout', (req, res) => {
   req.logout();
   res.send({ message: 'Logout successfull' });
 });

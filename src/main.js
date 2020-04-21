@@ -15,8 +15,11 @@ Vue.use(Vuetify);
 Vue.use(VueSwal);
 
 Vue.config.productionTip = false;
+// eslint-disable-next-line no-console
+Vue.prototype.$log = console.log;
 
 /* eslint-disable no-new */
+Vue.config.devtools = true;
 new Vue({
   el: '#app',
   router,
@@ -24,3 +27,4 @@ new Vue({
   template: '<App/>',
   vuetify: new Vuetify(),
 });
+

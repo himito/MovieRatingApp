@@ -1,11 +1,10 @@
-
 <template>
     <v-layout row wrap>
         <v-flex xs4>
             <v-card>
                 <v-card-title primary-title>
                     <div>
-                        <div class="hedline">
+                        <div class="headline">
                             {{ movie.name }}
                         </div>
                         <span class="grey--text">
@@ -18,6 +17,8 @@
                     {{ movie.description }}
                 </v-card-text>
             </v-card>
+            <v-btn v-bind:to="`/movies/edit/${movie._id}`">Éditer</v-btn>
+            <v-btn id="delete_btn" @click="deleteMovie">Supprimer</v-btn>
         </v-flex>
     </v-layout>
 </template>
@@ -56,23 +57,37 @@ export default {
   data() {
     return {
       movie: [],
+      current_user: null,
     };
   },
   // When page loads
   mounted() {
     this.fetchMovie();
+    this.fetchUser();
   },
   methods: {
+    async fetchUser() {
+      return axios({
+        method: 'get',
+        url: '/current_user',
+      })
+        .then((response) => {
+          this.current_user = response.data.current_user;
+        })
+        .catch(() => {
+        });
+    },
     async fetchMovie() {
       return axios({
         method: 'get',
-        url: `http://localhost:8081/api/movies/${this.$route.params.id}`,
+        url: `http://localhost:8081/movies/${this.$route.params.id}`,
       })
         .then((response) => {
           this.movie = response.data;
         })
-        .catch(() => {
-
+        .catch((error) => {
+          // eslint-disable-next-line no-console
+          console.log(error);
         });
     },
     async rate() { // If user rates, pop up + SEND signal
@@ -101,6 +116,36 @@ export default {
             this.$swal('Oh oh', `${msg}`, 'error');
           });
       });
+    },
+    async deleteMovie() {
+      this.$swal({
+        title: 'Êtes-vous sûr de vouloir supprimer ce film ?',
+        text: 'Une fois supprimé, vous ne pourrez pas le retrouver.',
+        icon: 'warning',
+        buttons: true,
+        dangerMode: true,
+      })
+        // eslint-disable-next-line consistent-return
+        .then((willDelete) => {
+          if (willDelete) {
+            // eslint-disable-next-line no-console
+            console.log('Delete Movie appelé ! \n');
+            return axios({
+              method: 'delete',
+              url: `http://localhost:8081/movies/${this.$route.params.id}`,
+            })
+              .then((response) => {
+                this.$swal('Le fichier a bien été supprimé!', 'success');
+                // eslint-disable-next-line no-console
+                console.log(response);
+              })
+              .catch((error) => {
+                const msg = JSON.stringify(error);
+                this.$swal('Oh oh', `${msg}`, 'error');
+              });
+          }
+          this.$swal('Le fichier n\'a pas été supprimé.');
+        });
     },
   },
 };
