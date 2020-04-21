@@ -80,7 +80,10 @@ module.exports.controller = (app) => {
   app.delete('/movies/:id', (req, res) => {
     console.log('App delete appelé ! \n');
     MovieSchema.deleteOne({ _id: req.params.id }, (error, _output) => {
-      if (error) { console.error(error); }
+      if (error) {
+        console.error(error);
+        res.send('Error');
+      }
       // res.send(output === 1 ? { msg: 'success' } : { msg: 'error' });
       else {
         console.log('successfully deleted');

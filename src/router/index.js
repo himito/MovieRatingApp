@@ -34,7 +34,7 @@ export default new Router({
       component: Movie,
     },
     {
-      path: 'movies/edit/:id',
+      path: '/movies/edit/:id',
       name: 'EditMovie',
       component: EditMovie,
     },
